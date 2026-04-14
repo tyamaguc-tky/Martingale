@@ -29,6 +29,10 @@ for j in range(n):
             if np.sum(xAxB) > 0:#xa + xb > 0
                 rc = np.random.choice((0, 1), p=(xAxB)/np.sum(xAxB))#current ratio
                 xAxB[rc] += 1#the selected xa or xb increases by one
+        #for Fig 6 non-competitive proliferation
+        #mass = np.sum(xAxB)
+        #xAxB += np.random.binomial(xAxB, 0.1/(mass + 10))#prolif
+        
         if np.random.rand() < add:#additive increase
             if amp != 0:#regulation with reinforcement learning
                 rc = np.random.choice((0, 1), p=(0.5, 0.5))# 1:1 ratio
