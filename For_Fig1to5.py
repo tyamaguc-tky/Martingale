@@ -10,9 +10,10 @@ for j in range(n):
     else:
         add = 0.1
     qa = 1 * amp
-    dec_min = 10**(-4)#10**(-7) * qa #for Fig3D
-    xAxB = np.array([1, 1], dtype=int)#[6*6/qa*a/2, 6*6/qa*a/2]#initial values of x_a and x_b
+    dec_min = 10**(-4)#10**(-7) * qa #for Fig5b
+    xAxB = np.array([1, 1], dtype=int)#[6*6/qa*a/2, 6*6/qa*a/2]#initial values of x_a and x_b. Change to [160,40], [99,1], or [1,99] in Fig. 3
     target = np.array([1, 2])
+    #target1 = np.array([4/5,1/5])#active for Fig. 3
     target_ratio = target/np.sum(target)#Target ratio is [1/3, 2/3]
     tmax = 10**t_ind#10**5#the number of repetitions
     data_all = np.zeros((2, tmax + 1), int)#for recording
@@ -52,6 +53,7 @@ for j in range(n):
                 else:
                     dec = dec_min*200
                 """
+                #dec = (np.sum((xratio - target_ratio)**2)/2 + 10**-3)* (np.sum((xratio - target1)**2)/2 + 5*10**-3)/2#for Fig. 3
             else:#CSC
                 dec = dec_min
             xAxB = np.random.binomial(xAxB, 1 - dec)#binomial distribution with the probability of 1-dec
@@ -59,7 +61,9 @@ for j in range(n):
                 xAxB[xAxB==0] = 1
     data_all[:, -1] = xAxB#record the last numbers
     for tt in range(t_ind +1):
-        data_n[j,tt] = data_all[0,10**tt]/np.sum(data_all[:,10**tt])
+        s = np.sum(data_all[:,10**tt])
+        if s >0:
+            data_n[j,tt] = data_all[0,10**tt]/s#np.sum(data_all[:,10**tt])
 d = data_all.T
 import matplotlib.pyplot as plt#for presentation as figure
 plt.plot(data_all[0,:])#xA
